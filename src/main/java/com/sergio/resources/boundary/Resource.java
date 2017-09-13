@@ -1,4 +1,4 @@
-package com.sergio.resources;
+package com.sergio.resources.boundary;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -6,11 +6,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-@Path("/resources")
+@Path("/intelliment")
 public class Resource {
 
     @GET
-    @Path("/hello")
+    @Path("/acl")
     @Produces(MediaType.TEXT_PLAIN)
     public Response sayHello() {
         System.out.println("hello from Jersey!");
