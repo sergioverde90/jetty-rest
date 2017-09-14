@@ -1,0 +1,3 @@
+[master 34dff5e] bug fixed when read =
+ 3 files changed, 11 insertions(+), 6 deletions(-)
+ create mode 100644 src/test/resources/intelliment-devtest-acl.txt

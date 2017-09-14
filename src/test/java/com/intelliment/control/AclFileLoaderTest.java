@@ -14,29 +14,29 @@ import static org.junit.Assert.assertNotNull;
 public class AclFileLoaderTest {
 
     // SUT
-    AclLoader loader = new AclFileLoader(new StringRequestMapper());
+    AclLoader<String> loader = new AclFileLoader(new StringRequestMapper());
 
     @Test
     public void readSourcesNotNull() throws Exception {
-        List<AclEntry> entries = loader.readSources();
+        List<AclEntry> entries = loader.readAndMap();
         assertNotNull(entries);
     }
 
     @Test
     public void readSourcesNotEmpty() throws Exception {
-        List<AclEntry> entries = loader.readSources();
+        List<AclEntry> entries = loader.readAndMap();
         assertNotEmpty(entries);
     }
 
     @Test
     public void readSourcesLength() throws Exception {
-        List<AclEntry> entries = loader.readSources();
+        List<AclEntry> entries = loader.readAndMap();
         assertEquals(1, entries.size());
     }
 
     @Test
     public void readSourcesEquals() throws Exception {
-        List<AclEntry> entries = loader.readSources();
+        List<AclEntry> entries = loader.readAndMap();
         AclEntry entry = entries.get(0);
         AclEntry expected = getExpectedEntry();
         assertEquals(expected, entry);

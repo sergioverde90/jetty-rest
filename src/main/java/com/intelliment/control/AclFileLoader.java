@@ -9,7 +9,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AclFileLoader implements AclLoader {
+public class AclFileLoader implements AclLoader<String> {
 
     private final RequestMapper<String> mapper;
 
@@ -18,18 +18,33 @@ public class AclFileLoader implements AclLoader {
     }
 
     @Override
-    public List<AclEntry> readSources() {
-        List<AclEntry> entries = new ArrayList<>();
+    public List<String> readSources() {
         InputStream resource = this.getClass().getClassLoader().getResourceAsStream("intelliment-devtest-acl.txt");
+        List<String> policies = new ArrayList<>();
         try(BufferedReader bis = new BufferedReader(new InputStreamReader(resource))){
-            String line;
-            while((line = bis.readLine()) != null) {
-                entries.add(mapper.map(line));
+            String policy;
+            while((policy = bis.readLine()) != null) {
+                policies.add(policy);
             }
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
-        return entries;
+        return policies;
+    }
+
+    @Override
+    public List<AclEntry> map(List<String> sources) {
+        List<AclEntry> acl = new ArrayList<>();
+        for (String source : sources) {
+            acl.add(mapper.map(source));
+        }
+        return acl;
+    }
+
+    @Override
+    public List<AclEntry> readAndMap() {
+        List<String> souces = readSources();
+        return map(souces);
     }
 
 }
