@@ -1,10 +1,10 @@
-package com.sergio.resources.control;
+package com.intelliment.control;
 
-import com.sergio.resources.Main;
-import com.sergio.resources.entity.AclEntry;
-import com.sergio.resources.entity.PolicyBuilder;
+import com.intelliment.Main;
+import com.intelliment.entity.AclEntry;
+import com.intelliment.entity.AclEntryBuilder;
 
-public class SimpleRequestMapper implements RequestMapper<String> {
+public class StringRequestMapper implements RequestMapper<String> {
 
     @Override
     public AclEntry map(String request) {
@@ -12,7 +12,7 @@ public class SimpleRequestMapper implements RequestMapper<String> {
         String destination =  extractTo(request);
         String protocol = extractProtocol(request);
         String action = extractAction(request);
-        PolicyBuilder builder = new PolicyBuilder(new Main.SubnetUtilsAnalyzer());
+        AclEntryBuilder builder = new AclEntryBuilder(new Main.SubnetUtilsAnalyzer());
         builder.source(source);
         builder.destination(destination);
         builder.protocol(protocol);

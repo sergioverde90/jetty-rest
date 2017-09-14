@@ -1,4 +1,4 @@
-package com.sergio.resources.boundary;
+package com.intelliment.boundary;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

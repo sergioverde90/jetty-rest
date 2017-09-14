@@ -1,11 +1,11 @@
-package com.sergio.resources;
+package com.intelliment;
 
-import com.sergio.resources.control.AclService;
-import com.sergio.resources.control.AclServiceImpl;
-import com.sergio.resources.control.InMemoryAclLoader;
-import com.sergio.resources.control.SimpleRequestMapper;
-import com.sergio.resources.entity.IpAddress;
-import com.sergio.resources.entity.Request;
+import com.intelliment.control.AclService;
+import com.intelliment.control.AclServiceImpl;
+import com.intelliment.control.InMemoryAclLoader;
+import com.intelliment.control.StringRequestMapper;
+import com.intelliment.entity.IpAddress;
+import com.intelliment.entity.Request;
 import org.apache.commons.net.util.SubnetUtils;
 
 public class Main {
@@ -16,8 +16,6 @@ public class Main {
     }
 
     public static class SubnetUtilsAnalyzer implements AddressAnalyzer {
-
-        private static final String SLASH = "/";
 
         public IpAddress valueOf(String cidr) {
             SubnetUtils utils = new SubnetUtils(cidr);
@@ -44,7 +42,7 @@ public class Main {
     public static void main(String[] args) {
         // entry point
         Request request = new Request("192.168.0.5", "192.168.0.1", "udp/80");
-        AclService service = new AclServiceImpl(new InMemoryAclLoader(new SimpleRequestMapper()));
+        AclService service = new AclServiceImpl(new InMemoryAclLoader(new StringRequestMapper()));
         System.out.println(service.isAllowed(request));
     }
 

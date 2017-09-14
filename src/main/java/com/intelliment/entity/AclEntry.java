@@ -1,6 +1,6 @@
-package com.sergio.resources.entity;
+package com.intelliment.entity;
 
-import com.sergio.resources.Main;
+import com.intelliment.Main;
 
 public class AclEntry {
 
@@ -10,7 +10,7 @@ public class AclEntry {
     final private Object action;
     final Main.AddressAnalyzer analyzer;
 
-    public AclEntry(PolicyBuilder builder) {
+    AclEntry(AclEntryBuilder builder) {
         this.source = builder.getSource();
         this.destination = builder.getSource();
         this.protocol = builder.getProtocol();

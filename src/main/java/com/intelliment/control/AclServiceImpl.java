@@ -1,7 +1,7 @@
-package com.sergio.resources.control;
+package com.intelliment.control;
 
-import com.sergio.resources.entity.AclEntry;
-import com.sergio.resources.entity.Request;
+import com.intelliment.entity.AclEntry;
+import com.intelliment.entity.Request;
 
 import java.util.Collection;
 

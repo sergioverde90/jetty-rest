@@ -1,4 +1,4 @@
-package com.sergio.resources.entity;
+package com.intelliment.entity;
 
 public class Request {
 

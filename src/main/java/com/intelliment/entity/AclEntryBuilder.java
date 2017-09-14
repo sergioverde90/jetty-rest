@@ -1,8 +1,8 @@
-package com.sergio.resources.entity;
+package com.intelliment.entity;
 
-import com.sergio.resources.Main;
+import com.intelliment.Main;
 
-public class PolicyBuilder {
+public class AclEntryBuilder {
 
     public final Main.AddressAnalyzer analyzer;
     private IpAddress source;
@@ -10,7 +10,7 @@ public class PolicyBuilder {
     private Object protocol;
     private Object action;
 
-    public PolicyBuilder(Main.AddressAnalyzer analyzer) {
+    public AclEntryBuilder(Main.AddressAnalyzer analyzer) {
         this.analyzer = analyzer;
     }
 
