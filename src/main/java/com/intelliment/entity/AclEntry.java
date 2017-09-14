@@ -2,6 +2,8 @@ package com.intelliment.entity;
 
 import com.intelliment.Main;
 
+import java.util.Objects;
+
 public class AclEntry {
 
     final private IpAddress source;
@@ -25,6 +27,22 @@ public class AclEntry {
         if(!analyzer.isInRange(requestDestination, destination)) return false;
         System.out.println("this = " + this);
         return true;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AclEntry aclEntry = (AclEntry) o;
+        return Objects.equals(source, aclEntry.source) &&
+                Objects.equals(destination, aclEntry.destination) &&
+                Objects.equals(protocol, aclEntry.protocol) &&
+                Objects.equals(action, aclEntry.action);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(source, destination, protocol, action);
     }
 
     @Override
