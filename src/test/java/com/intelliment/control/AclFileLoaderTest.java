@@ -1,6 +1,8 @@
 package com.intelliment.control;
 
+import com.intelliment.Main;
 import com.intelliment.entity.AclEntry;
+import com.intelliment.entity.AclEntryBuilder;
 import org.junit.Test;
 
 import java.util.List;
@@ -13,7 +15,6 @@ public class AclFileLoaderTest {
 
     // SUT
     AclLoader loader = new AclFileLoader(new StringRequestMapper());
-    StringRequestMapper mapper = new StringRequestMapper();
 
     @Test
     public void readSourcesNotNull() throws Exception {
@@ -30,7 +31,7 @@ public class AclFileLoaderTest {
     @Test
     public void readSourcesLength() throws Exception {
         List<AclEntry> entries = loader.readSources();
-        assertEquals(1000, entries.size());
+        assertEquals(1, entries.size());
     }
 
     @Test
@@ -46,8 +47,11 @@ public class AclFileLoaderTest {
     }
 
     public AclEntry getExpectedEntry() {
-        String source = "1 from 43.0.0.0/8 to any with udp/53839,49944,58129,21778 => deny";
-        AclEntry entry = mapper.map(source);
-        return entry;
+        AclEntryBuilder builder = new AclEntryBuilder(new Main.SubnetUtilsAnalyzer());
+        builder.source("43.0.0.0/8");
+        builder.destination("0.0.0.0/32");
+        builder.protocol("udp/53839,49944,58129,21778");
+        builder.action("deny");
+        return builder.build();
     }
 }

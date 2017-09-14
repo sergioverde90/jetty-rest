@@ -47,7 +47,7 @@ public class StringRequestMapper implements RequestMapper<String> {
     }
 
     private static String extractAction(String input) {
-        int arrowIndex = input.indexOf("=>");
+        int arrowIndex = input.indexOf("=>")+"=>".length();
         return input.substring(arrowIndex, input.length()).trim();
     }
 
