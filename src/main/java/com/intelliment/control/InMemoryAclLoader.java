@@ -13,7 +13,7 @@ public class InMemoryAclLoader implements AclLoader<String> {
     }
 
     @Override
-    public List<String> readSources() {
+    public List<String> rawSources() {
         String source1 = "1 from 192.168.0.10 to 192.168.0.2 with tcp/80 => deny";
         String source2 = "2 from 88.1.12.225 to 99.235.1.15 with tcp/80,8080 => deny";
         String source3 = "3 from 192.168.0.0/24 to 192.168.0.0/28 with udp/any => deny";
@@ -32,7 +32,7 @@ public class InMemoryAclLoader implements AclLoader<String> {
 
     @Override
     public List<AclEntry> readAndMap() {
-        List<String> sources = readSources();
+        List<String> sources = rawSources();
         return map(sources);
     }
 }

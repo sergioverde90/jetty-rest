@@ -10,7 +10,7 @@ public class AclServiceImpl implements AclService {
     final Collection<AclEntry> policies;
 
     public AclServiceImpl(AclLoader loader) {
-        this.policies = loader.readSources();
+        this.policies = loader.rawSources();
     }
 
     @Override

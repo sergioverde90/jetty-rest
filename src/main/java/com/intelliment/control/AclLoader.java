@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface AclLoader<T> {
 
-    List<T> readSources();
+    List<T> rawSources();
     List<AclEntry> map(List<T> sources);
     List<AclEntry> readAndMap();
 

@@ -15,7 +15,7 @@ public class StringRequestMapperTest {
 
     @Before
     public void init() {
-        this.sources = loader.readSources();
+        this.sources = loader.rawSources();
     }
 
     @Test

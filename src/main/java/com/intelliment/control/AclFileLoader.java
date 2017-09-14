@@ -18,7 +18,7 @@ public class AclFileLoader implements AclLoader<String> {
     }
 
     @Override
-    public List<String> readSources() {
+    public List<String> rawSources() {
         InputStream resource = this.getClass().getClassLoader().getResourceAsStream("intelliment-devtest-acl.txt");
         List<String> policies = new ArrayList<>();
         try(BufferedReader bis = new BufferedReader(new InputStreamReader(resource))){
@@ -43,7 +43,7 @@ public class AclFileLoader implements AclLoader<String> {
 
     @Override
     public List<AclEntry> readAndMap() {
-        List<String> souces = readSources();
+        List<String> souces = rawSources();
         return map(souces);
     }
 
