@@ -1,17 +1,49 @@
-package com.intelliment.entity;
+package com.intelliment.control;
 
 import java.util.Objects;
 
+/**
+ * This class is immutable, therefore all its fields can be public.
+ *
+ * @author Sergio Verde
+ */
 public class IpAddress {
 
-    public String type; // A, B or C
-    public String mask; // 255.0.0.0 / 255.255.0.0 / 255.255.255.0
-    public String cidr;
-    public String broadcast;
-    public String netIdentifier;
-    public String maxHostDir;
-    public String minHostDir;
-    public int totalHostsInNet;
+    public final String type;
+    public final String mask;
+    public final String cidr;
+    public final String broadcast;
+    public final String netIdentifier;
+    public final String maxHostDir;
+    public final String minHostDir;
+    public final int totalHostsInNet;
+
+    public IpAddress(IpAddressBuilder ipAddressBuilder) {
+        this.type = ipAddressBuilder.type;
+        this.mask = ipAddressBuilder.mask;
+        this.broadcast = ipAddressBuilder.broadcast;
+        this.netIdentifier = ipAddressBuilder.netIdentifier;
+        this.maxHostDir = ipAddressBuilder.maxHostDir;
+        this.minHostDir = ipAddressBuilder.minHostDir;
+        this.totalHostsInNet = ipAddressBuilder.totalHostsInNet;
+        this.cidr = ipAddressBuilder.cidr;
+    }
+
+    public static class IpAddressBuilder {
+
+        public String type;
+        public String mask;
+        public String cidr;
+        public String broadcast;
+        public String netIdentifier;
+        public String maxHostDir;
+        public String minHostDir;
+        public int totalHostsInNet;
+
+        public IpAddress build() {
+            return new IpAddress(this);
+        }
+    }
 
     @Override
     public boolean equals(Object o) {
