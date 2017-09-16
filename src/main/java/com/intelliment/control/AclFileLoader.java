@@ -9,17 +9,13 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AclFileLoader implements AclLoader<String> {
+public class AclFileLoader implements AclLoader {
 
-    private final RequestMapper<String> mapper;
+    static final List<String> policies = initialize();
+    private final RequestMapper<String> mapper = new StringRequestMapper();
 
-    public AclFileLoader(RequestMapper<String> mapper){
-        this.mapper = mapper;
-    }
-
-    @Override
-    public List<String> rawSources() {
-        InputStream resource = this.getClass().getClassLoader().getResourceAsStream("intelliment-devtest-acl.txt");
+    private static List<String> initialize() {
+        InputStream resource = AclFileLoader.class.getClassLoader().getResourceAsStream("intelliment-devtest-acl.txt");
         List<String> policies = new ArrayList<>();
         try(BufferedReader bis = new BufferedReader(new InputStreamReader(resource))){
             String policy;
@@ -33,18 +29,20 @@ public class AclFileLoader implements AclLoader<String> {
     }
 
     @Override
-    public List<AclEntry> map(List<String> sources) {
+    public List<AclEntry> sources() {
+        List<String> sources = rawSources();
+        return map(sources);
+    }
+
+    private List<String> rawSources() {
+        return policies;
+    }
+
+    private List<AclEntry> map(List<String> sources) {
         List<AclEntry> acl = new ArrayList<>();
         for (String source : sources) {
             acl.add(mapper.map(source));
         }
         return acl;
     }
-
-    @Override
-    public List<AclEntry> readAndMap() {
-        List<String> souces = rawSources();
-        return map(souces);
-    }
-
 }

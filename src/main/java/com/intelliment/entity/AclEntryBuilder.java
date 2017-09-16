@@ -1,16 +1,16 @@
 package com.intelliment.entity;
 
-import com.intelliment.Main;
+import com.intelliment.control.AddressAnalyzer;
 
 public class AclEntryBuilder {
 
-    public final Main.AddressAnalyzer analyzer;
+    public final AddressAnalyzer analyzer;
     private IpAddress source;
     private IpAddress destination;
-    private Object protocol;
+    private Protocol protocol;
     private Object action;
 
-    public AclEntryBuilder(Main.AddressAnalyzer analyzer) {
+    public AclEntryBuilder(AddressAnalyzer analyzer) {
         this.analyzer = analyzer;
     }
 
@@ -30,11 +30,11 @@ public class AclEntryBuilder {
         this.source = analyzer.valueOf(source);
     }
 
-    public Object getProtocol() {
+    public Protocol getProtocol() {
         return protocol;
     }
 
-    public void protocol(Object protocol) {
+    public void protocol(Protocol protocol) {
         this.protocol = protocol;
     }
 

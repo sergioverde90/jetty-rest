@@ -1,4 +1,4 @@
-package com.intelliment.control;
+package com.intelliment.entity;
 
 import java.util.Objects;
 
@@ -9,7 +9,6 @@ import java.util.Objects;
  */
 public class IpAddress {
 
-    public final String type;
     public final String mask;
     public final String cidr;
     public final String broadcast;
@@ -19,7 +18,6 @@ public class IpAddress {
     public final int totalHostsInNet;
 
     public IpAddress(IpAddressBuilder ipAddressBuilder) {
-        this.type = ipAddressBuilder.type;
         this.mask = ipAddressBuilder.mask;
         this.broadcast = ipAddressBuilder.broadcast;
         this.netIdentifier = ipAddressBuilder.netIdentifier;
@@ -31,17 +29,51 @@ public class IpAddress {
 
     public static class IpAddressBuilder {
 
-        public String type;
-        public String mask;
-        public String cidr;
-        public String broadcast;
-        public String netIdentifier;
-        public String maxHostDir;
-        public String minHostDir;
-        public int totalHostsInNet;
+        private String mask;
+        private String cidr;
+        private String broadcast;
+        private String netIdentifier;
+        private String maxHostDir;
+        private String minHostDir;
+        private int totalHostsInNet;
 
         public IpAddress build() {
             return new IpAddress(this);
+        }
+
+        public IpAddressBuilder setMask(String mask) {
+            this.mask = mask;
+            return this;
+        }
+
+        public IpAddressBuilder setCidr(String cidr) {
+            this.cidr = cidr;
+            return this;
+        }
+
+        public IpAddressBuilder setBroadcast(String broadcast) {
+            this.broadcast = broadcast;
+            return this;
+        }
+
+        public IpAddressBuilder setNetIdentifier(String netIdentifier) {
+            this.netIdentifier = netIdentifier;
+            return this;
+        }
+
+        public IpAddressBuilder setMaxHostDir(String maxHostDir) {
+            this.maxHostDir = maxHostDir;
+            return this;
+        }
+
+        public IpAddressBuilder setMinHostDir(String minHostDir) {
+            this.minHostDir = minHostDir;
+            return this;
+        }
+
+        public IpAddressBuilder setTotalHostsInNet(int totalHostsInNet) {
+            this.totalHostsInNet = totalHostsInNet;
+            return this;
         }
     }
 
@@ -61,8 +93,7 @@ public class IpAddress {
     @Override
     public String toString() {
         return "{\"IpAddress\":{"
-                + "\"type\":\"" + type + "\""
-                + ", \"mask\":\"" + mask + "\""
+                + "\"mask\":\"" + mask + "\""
                 + ", \"cidr\":\"" + cidr + "\""
                 + ", \"broadcast\":\"" + broadcast + "\""
                 + ", \"netIdentifier\":\"" + netIdentifier + "\""

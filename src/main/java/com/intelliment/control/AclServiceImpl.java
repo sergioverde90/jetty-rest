@@ -5,12 +5,12 @@ import com.intelliment.entity.Request;
 
 import java.util.Collection;
 
-public class AclServiceImpl implements AclService {
+class AclServiceImpl implements AclService {
 
     final Collection<AclEntry> policies;
 
-    public AclServiceImpl(AclLoader loader) {
-        this.policies = loader.rawSources();
+    AclServiceImpl(AclLoader loader) {
+        this.policies = loader.sources();
     }
 
     @Override
@@ -20,4 +20,15 @@ public class AclServiceImpl implements AclService {
         }
         return false;
     }
+
+    @Override
+    public Collection<AclEntry> acl() {
+        return policies;
+    }
+
+    @Override
+    public AclEntry get(int id) {
+        return null;
+    }
+
 }

@@ -9,15 +9,15 @@ public class SubnetUtilsAnalyzer implements AddressAnalyzer {
         SubnetUtils utils = new SubnetUtils(cidr);
         String mask =  utils.getInfo().getNetmask();
         String broadcast = utils.getInfo().getBroadcastAddress();
-        IpAddress.IpAddressBuilder builder = new IpAddress.IpAddressBuilder();
-        builder.cidr = cidr;
-        builder.mask = mask;
-        builder.broadcast = broadcast;
-        builder.netIdentifier = utils.getInfo().getNetworkAddress();
-        builder.maxHostDir = utils.getInfo().getHighAddress();
-        builder.minHostDir = utils.getInfo().getLowAddress();
-        builder.totalHostsInNet = utils.getInfo().getAddressCount();
-        return builder.build();
+        return new IpAddress.IpAddressBuilder()
+                .setCidr(cidr)
+                .setMask(mask)
+                .setBroadcast(broadcast)
+                .setNetIdentifier(utils.getInfo().getNetworkAddress())
+                .setMaxHostDir(utils.getInfo().getHighAddress())
+                .setMinHostDir(utils.getInfo().getLowAddress())
+                .setTotalHostsInNet(utils.getInfo().getAddressCount())
+                .build();
     }
 
     @Override

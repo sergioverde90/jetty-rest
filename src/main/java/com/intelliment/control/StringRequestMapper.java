@@ -1,23 +1,20 @@
 package com.intelliment.control;
 
-import com.intelliment.Main;
 import com.intelliment.entity.AclEntry;
 import com.intelliment.entity.AclEntryBuilder;
+import com.intelliment.entity.Protocol;
+
+import static com.intelliment.entity.Constants.*;
 
 public class StringRequestMapper implements RequestMapper<String> {
-
-    private static final String SLASH = "/";
-    private static final String DEFAULT_NETMASK = "/32";
-    private static final String OPEN_WORLD_ADDRESS = "0.0.0.0";
-    private static final String OPEN_WORLD_LABEL = "any";
 
     @Override
     public AclEntry map(String request) {
         String source = extractFrom(request);
         String destination =  extractTo(request);
-        String protocol = extractProtocol(request);
+        Protocol protocol = extractProtocol(request);
         String action = extractAction(request);
-        AclEntryBuilder builder = new AclEntryBuilder(new Main.SubnetUtilsAnalyzer());
+        AclEntryBuilder builder = new AclEntryBuilder(new SubnetUtilsAnalyzer());
         builder.source(source);
         builder.destination(destination);
         builder.protocol(protocol);
@@ -51,10 +48,10 @@ public class StringRequestMapper implements RequestMapper<String> {
         return input.substring(arrowIndex, input.length()).trim();
     }
 
-    private static String extractProtocol(String input) {
+    private static Protocol extractProtocol(String input) {
         int withIndex = input.indexOf("with")+"with".length();
         int arrowIndex = input.indexOf("=>");
-        return input.substring(withIndex, arrowIndex).trim();
+        return Protocol.valueOf(input.substring(withIndex, arrowIndex).trim());
     }
 
     private static String toCIDR(String input) {

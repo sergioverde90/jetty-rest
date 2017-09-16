@@ -4,7 +4,12 @@ import com.intelliment.entity.AclEntry;
 
 import java.util.*;
 
-public class InMemoryAclLoader implements AclLoader<String> {
+/**
+ * <b>This class only must be used for testing purposed</b>
+ *
+ * @author Sergio Verde
+ */
+class InMemoryAclLoader implements AclLoader {
 
     final RequestMapper<String> mapper;
 
@@ -13,26 +18,25 @@ public class InMemoryAclLoader implements AclLoader<String> {
     }
 
     @Override
-    public List<String> rawSources() {
+    public List<AclEntry> sources() {
+        List<String> sources = rawSources();
+        return map(sources);
+    }
+
+    private List<String> rawSources() {
         String source1 = "1 from 192.168.0.10 to 192.168.0.2 with tcp/80 => deny";
         String source2 = "2 from 88.1.12.225 to 99.235.1.15 with tcp/80,8080 => deny";
         String source3 = "3 from 192.168.0.0/24 to 192.168.0.0/28 with udp/any => deny";
-        return Arrays.asList(source1, source2, source3);
+        String source4 = "4 from 43.0.0.0/8 to any with udp/53839,49944,58129,21778 => deny";
+        return Arrays.asList(source1, source2, source3, source4);
     }
 
-    @Override
-    public List<AclEntry> map(List<String> sources) {
+    private List<AclEntry> map(List<String> sources) {
         List<AclEntry> entries = new ArrayList<>();
         for (String source : sources) {
             AclEntry mapped = mapper.map(source);
             entries.add(mapped);
         }
         return entries;
-    }
-
-    @Override
-    public List<AclEntry> readAndMap() {
-        List<String> sources = rawSources();
-        return map(sources);
     }
 }

@@ -1,16 +1,16 @@
 package com.intelliment.entity;
 
-import com.intelliment.Main;
+import com.intelliment.control.AddressAnalyzer;
 
 import java.util.Objects;
 
 public class AclEntry {
 
-    final private IpAddress source;
-    final private IpAddress destination;
-    final private Object protocol;
-    final private Object action;
-    final Main.AddressAnalyzer analyzer;
+    public final IpAddress source;
+    public final IpAddress destination;
+    public final Protocol protocol;
+    public final Object action;
+    private final AddressAnalyzer analyzer;
 
     AclEntry(AclEntryBuilder builder) {
         this.source = builder.getSource();
@@ -25,7 +25,9 @@ public class AclEntry {
         if(!analyzer.isInRange(requestSource, source)) return false;
         String requestDestination = request.destination;
         if(!analyzer.isInRange(requestDestination, destination)) return false;
-        System.out.println("this = " + this);
+        Protocol requestProtocol = request.protocol;
+        if(!protocol.isInRange(requestProtocol)) return false;
+        // TODO: action allowed here (must be the last computation)
         return true;
     }
 
