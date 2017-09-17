@@ -4,11 +4,12 @@ import com.intelliment.control.AddressAnalyzer;
 
 public class AclEntryBuilder {
 
-    public final AddressAnalyzer analyzer;
+    private final AddressAnalyzer analyzer;
+    private int id;
     private IpAddress source;
     private IpAddress destination;
     private Protocol protocol;
-    private Object action;
+    private AclEntry.ActionType action;
 
     public AclEntryBuilder(AddressAnalyzer analyzer) {
         this.analyzer = analyzer;
@@ -26,32 +27,48 @@ public class AclEntryBuilder {
         return source;
     }
 
-    public void source(String source) {
+    public AclEntryBuilder source(String source) {
         this.source = analyzer.valueOf(source);
+        return this;
     }
 
     public Protocol getProtocol() {
         return protocol;
     }
 
-    public void protocol(Protocol protocol) {
+    public AclEntryBuilder protocol(Protocol protocol) {
         this.protocol = protocol;
+        return this;
     }
 
-    public Object getAction() {
+    public AclEntry.ActionType getAction() {
         return action;
     }
 
-    public void action(Object action) {
+    public AclEntryBuilder action(AclEntry.ActionType action) {
         this.action = action;
+        return this;
     }
 
     public IpAddress getDestination() {
         return destination;
     }
 
-    public void destination(String destination) {
+    public AclEntryBuilder destination(String destination) {
         this.destination = analyzer.valueOf(destination);
+        return this;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public AclEntryBuilder setId(int id) {
+        this.id = id;
+        return this;
+    }
+
+    public AddressAnalyzer getAnalyzer() {
+        return analyzer;
+    }
 }

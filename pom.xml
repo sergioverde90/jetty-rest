@@ -36,6 +36,12 @@
       <version>1.9.5</version>
       <scope>test</scope>
     </dependency>
+    <!-- Jersey JSON providers -->
+    <dependency>
+      <groupId>org.glassfish.jersey.media</groupId>
+      <artifactId>jersey-media-json-jackson</artifactId>
+      <version>2.26</version>
+    </dependency>
   </dependencies>
   <build>
     <plugins>

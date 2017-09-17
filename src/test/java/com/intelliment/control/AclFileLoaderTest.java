@@ -49,7 +49,7 @@ public class AclFileLoaderTest {
         builder.source("43.0.0.0/8");
         builder.destination("0.0.0.0/32");
         builder.protocol(Protocol.valueOf("udp/53839,49944,58129,21778"));
-        builder.action("deny");
+        builder.action(AclEntry.ActionType.DENY);
         return builder.build();
     }
 }

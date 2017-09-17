@@ -11,11 +11,7 @@ import java.util.*;
  */
 class InMemoryAclLoader implements AclLoader {
 
-    final RequestMapper<String> mapper;
-
-    public InMemoryAclLoader(RequestMapper<String> mapper){
-        this.mapper = mapper;
-    }
+    final RequestMapper<String> mapper = new StringRequestMapper();
 
     @Override
     public List<AclEntry> sources() {

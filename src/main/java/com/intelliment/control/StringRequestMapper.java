@@ -10,16 +10,23 @@ public class StringRequestMapper implements RequestMapper<String> {
 
     @Override
     public AclEntry map(String request) {
+        int id = extractId(request);
         String source = extractFrom(request);
         String destination =  extractTo(request);
         Protocol protocol = extractProtocol(request);
-        String action = extractAction(request);
+        AclEntry.ActionType action = extractAction(request);
         AclEntryBuilder builder = new AclEntryBuilder(new SubnetUtilsAnalyzer());
+        builder.setId(id);
         builder.source(source);
         builder.destination(destination);
         builder.protocol(protocol);
         builder.action(action);
         return builder.build();
+    }
+
+    private int extractId(String input) {
+        int fromIndex = input.indexOf("from");
+        return Integer.parseInt(input.substring(0, fromIndex).trim());
     }
 
     private static String extractFrom(String input) {
@@ -43,9 +50,10 @@ public class StringRequestMapper implements RequestMapper<String> {
         return address;
     }
 
-    private static String extractAction(String input) {
+    private static AclEntry.ActionType extractAction(String input) {
         int arrowIndex = input.indexOf("=>")+"=>".length();
-        return input.substring(arrowIndex, input.length()).trim();
+        String action = input.substring(arrowIndex, input.length()).trim();
+        return AclEntry.ActionType.valueOf(action.toUpperCase());
     }
 
     private static Protocol extractProtocol(String input) {

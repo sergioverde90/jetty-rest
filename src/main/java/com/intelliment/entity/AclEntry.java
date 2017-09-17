@@ -6,18 +6,22 @@ import java.util.Objects;
 
 public class AclEntry {
 
+    public enum ActionType {ALLOW, DENY}
+
+    public final int id;
     public final IpAddress source;
     public final IpAddress destination;
     public final Protocol protocol;
-    public final Object action;
+    public final ActionType action;
     private final AddressAnalyzer analyzer;
 
     AclEntry(AclEntryBuilder builder) {
+        this.id = builder.getId();
         this.source = builder.getSource();
         this.destination = builder.getSource();
         this.protocol = builder.getProtocol();
         this.action = builder.getAction();
-        this.analyzer = builder.analyzer;
+        this.analyzer = builder.getAnalyzer();
     }
 
     public boolean matches(Request request) {
