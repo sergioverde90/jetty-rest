@@ -5,9 +5,12 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 import static com.intelliment.entity.Constants.ANY_PORT;
+import static com.intelliment.entity.Constants.MAX_PORT_ALLOWED;
 import static com.intelliment.entity.Constants.OPEN_WORLD_LABEL;
+import static java.util.stream.Collectors.toSet;
 
 public class Protocol {
 
@@ -22,6 +25,8 @@ public class Protocol {
     }
     
     static Protocol newInstance(ProtocolType type, Set<Integer> ports) {
+        if(ports.stream().anyMatch((p) -> p > MAX_PORT_ALLOWED))
+            throw new IllegalArgumentException("No port can be greater than "+MAX_PORT_ALLOWED);
         return new Protocol(type, ports);
     }
 
@@ -47,19 +52,23 @@ public class Protocol {
     }
 
     public boolean isInRange(Protocol requestProtocol) {
-        return isAnyProtocol() || matchProtocols(requestProtocol) && matchAllPorts(requestProtocol);
+        System.out.println("isAnyProtocol() = " + isAnyProtocol());
+        System.out.println("isAnyPort() = " + isAnyPort());
+        System.out.println("matchProtocols(requestProtocol) = " + matchProtocols(requestProtocol));
+        System.out.println("matchAllPorts(requestProtocol) = " + matchAllPorts(requestProtocol));
+        return matchProtocols(requestProtocol) && matchAllPorts(requestProtocol);
     }
 
     private boolean matchAllPorts(Protocol requestProtocol) {
-        return ports.containsAll(requestProtocol.ports);
+        return isAnyPort() || ports.containsAll(requestProtocol.ports);
     }
 
     private boolean isAnyProtocol() {
-        return type.equals(ProtocolType.ANY) && isAnyPort();
+        return type.equals(ProtocolType.ANY);
     }
 
     private boolean matchProtocols(Protocol requestProtocol) {
-        return type.equals(requestProtocol.type);
+        return isAnyProtocol() || type.equals(requestProtocol.type);
     }
 
     private boolean isAnyPort() {
@@ -79,9 +88,7 @@ public class Protocol {
             ports.add(ANY_PORT);
         else {
             String[] sPorts = portsFound.split(SPLITTER);
-            for (String sPort : sPorts) {
-                ports.add(Integer.valueOf(sPort));
-            }
+            ports = Stream.of(sPorts).map(Integer::valueOf).collect(toSet());
         }
         return ports;
     }
@@ -93,8 +100,7 @@ public class Protocol {
         Matcher matcher = pattern.matcher(format);
         matcher.find();
         String matchedValue = matcher.group().toUpperCase();
-        ProtocolType protocolType = ProtocolType.valueOf(matchedValue);
-        return protocolType;
+        return ProtocolType.valueOf(matchedValue);
     }
 
     @Override

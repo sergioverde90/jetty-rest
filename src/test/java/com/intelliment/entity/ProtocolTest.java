@@ -5,7 +5,9 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.IntStream;
 
+import static java.util.stream.Collectors.toSet;
 import static org.junit.Assert.*;
 
 public class ProtocolTest {
@@ -52,6 +54,13 @@ public class ProtocolTest {
     }
 
     @Test
+    public void isInRange2() throws Exception {
+        Protocol in = getExpected(Protocol.ProtocolType.TCP, 80);
+        Protocol inRange = getExpected(Protocol.ProtocolType.ANY, 8080, 9090, 80, 6201);
+        assertTrue(inRange.isInRange(in));
+    }
+
+    @Test
     public void isNotInRangeByProtocol() throws Exception {
         Protocol in = getExpected(Protocol.ProtocolType.TCP, 80);
         Protocol inRange = getExpected(Protocol.ProtocolType.UDP, 80);
@@ -70,9 +79,13 @@ public class ProtocolTest {
         Protocol.valueOf("udp/50,");
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void valueOfProtocol() throws Exception {
+        Protocol.valueOf("*dp/50");
+    }
+
     private Protocol getExpected(Protocol.ProtocolType type, int... ports) {
-        Set<Integer> set = new HashSet<>();
-        for (int port : ports) { set.add(port); }
+        Set<Integer> set = IntStream.of(ports).boxed().collect(toSet());
         return Protocol.newInstance(type, set);
     }
 

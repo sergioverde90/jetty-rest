@@ -5,11 +5,11 @@ import com.intelliment.entity.Request;
 
 import java.util.Collection;
 
-class AclServiceImpl implements AclService {
+public class AclServiceImpl implements AclService {
 
     final Collection<AclEntry> policies;
 
-    AclServiceImpl(AclLoader loader) {
+    public AclServiceImpl(AclLoader loader) {
         this.policies = loader.sources();
     }
 
