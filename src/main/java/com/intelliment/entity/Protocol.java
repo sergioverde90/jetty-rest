@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static com.intelliment.entity.Constants.ANY_PORT;
@@ -30,6 +31,11 @@ public class Protocol {
         return new Protocol(type, ports);
     }
 
+    static Protocol newInstance(ProtocolType type, int... ports) {
+        Set<Integer> set = IntStream.of(ports).boxed().collect(toSet());
+        return Protocol.newInstance(type, set);
+    }
+
     /**
      * <p>
      * The format must follow the following structure
@@ -41,7 +47,7 @@ public class Protocol {
      * @return protocol instance
      */
     public static Protocol valueOf(String format) {
-        if("any".equals(format)) return newInstance(ProtocolType.ANY, Collections.singleton(-1));
+        if(Constants.OPEN_WORLD_LABEL.equals(format)) return newInstance(ProtocolType.ANY, Collections.singleton(-1));
         // regex patter for (TCP | UDP)/port[,port] or 'any'.
         String regex = "(TCP|UDP|tcp|udp)/(any|(\\d{1,5}(,\\d{1,5})*)+)";
         Pattern pattern = Pattern.compile(regex);
