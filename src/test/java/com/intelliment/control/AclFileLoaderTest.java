@@ -44,7 +44,7 @@ public class AclFileLoaderTest {
         assertFalse(entries.isEmpty());
     }
 
-    public AclEntry getExpectedEntry() {
+    private AclEntry getExpectedEntry() {
         AclEntryBuilder builder = new AclEntryBuilder(new SubnetUtilsAnalyzer());
         builder.source("43.0.0.0/8");
         builder.destination("0.0.0.0/32");

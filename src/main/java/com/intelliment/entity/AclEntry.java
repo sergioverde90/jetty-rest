@@ -18,7 +18,7 @@ public class AclEntry {
     AclEntry(AclEntryBuilder builder) {
         this.id = builder.getId();
         this.source = builder.getSource();
-        this.destination = builder.getSource();
+        this.destination = builder.getDestination();
         this.protocol = builder.getProtocol();
         this.action = builder.getAction();
         this.analyzer = builder.getAnalyzer();
@@ -27,10 +27,14 @@ public class AclEntry {
     public boolean matches(Request request) {
         String requestSource = request.source;
         if(!analyzer.isInRange(requestSource, source)) return false;
+        System.out.println("source in range");
         String requestDestination = request.destination;
+        System.out.println("destination = " + destination.cidr);
         if(!analyzer.isInRange(requestDestination, destination)) return false;
+        System.out.println("destination in range");
         Protocol requestProtocol = request.protocol;
         if(!protocol.isInRange(requestProtocol)) return false;
+        System.out.println("protocol in range");
         // TODO: action allowed here (must be the last computation)
         return true;
     }
