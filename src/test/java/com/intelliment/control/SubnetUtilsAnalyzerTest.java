@@ -4,6 +4,7 @@ import com.intelliment.entity.IpAddress;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
 
 public class SubnetUtilsAnalyzerTest {
@@ -21,6 +22,11 @@ public class SubnetUtilsAnalyzerTest {
     @Test
     public void isInRange() throws Exception {
         assertTrue(analyzer.isInRange("192.31.255.252", expected()));
+    }
+
+    @Test
+    public void isNotInRange() throws Exception {
+        assertFalse(analyzer.isInRange("191.168.255.214", expected()));
     }
 
     private IpAddress expected() {
