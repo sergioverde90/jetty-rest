@@ -29,12 +29,12 @@ public class AclEntry {
         if(!analyzer.isInRange(requestSource, source)) return false;
         System.out.println("source in range");
         String requestDestination = request.destination;
-        System.out.println("destination = " + destination.cidr);
         if(!analyzer.isInRange(requestDestination, destination)) return false;
         System.out.println("destination in range");
         Protocol requestProtocol = request.protocol;
         if(!protocol.isInRange(requestProtocol)) return false;
         System.out.println("protocol in range");
+        System.out.println("action = " + action);
         return action.equals(ActionType.ALLOW);
     }
 

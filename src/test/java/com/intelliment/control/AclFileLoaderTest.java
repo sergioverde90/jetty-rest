@@ -29,7 +29,7 @@ public class AclFileLoaderTest {
     @Test
     public void readSourcesLength() throws Exception {
         List<AclEntry> entries = loader.sources();
-        assertEquals(1000, entries.size());
+        assertEquals(996, entries.size());
     }
 
     @Test

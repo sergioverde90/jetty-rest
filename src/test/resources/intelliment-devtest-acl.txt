@@ -655,7 +655,6 @@
 655 from 82.37.132.12 to 155.252.211.119 with udp/any => allow
 656 from 118.145.122.194 to any with udp/18699,31666,33962,11956 => allow
 657 from 239.237.133.137 to 228.23.96.214 with tcp/18568,30645,14428,30078 => allow
-658 from any to any with any => allow
 659 from 160.22.153.48 to 70.250.25.244 with any => allow
 660 from 177.8.3.7 to 211.64.188.238 with any => allow
 661 from 211.83.40.157 to 186.169.75.252 with any => allow
@@ -895,14 +894,11 @@
 895 from 105.170.61.0/24 to 151.124.83.14 with udp/50421,20014 => allow
 896 from 89.56.102.238 to 171.23.5.88 with udp/48813 => allow
 897 from 1.62.22.7 to 5.78.224.0/24 with udp/any => allow
-898 from any to any with any => allow
-899 from any to any with any => allow
 900 from 240.156.36.247 to 141.20.246.196 with udp/61622,48538,61359,21275 => allow
 901 from any to 25.60.238.27 with tcp/21790,6880 => allow
 902 from 89.86.53.139 to 216.33.15.117 with any => allow
 903 from 90.63.203.62 to 151.223.90.165 with udp/45057,30731,35849 => allow
 904 from 220.166.225.253 to 161.201.249.148 with udp/44279,58497,61471 => allow
-905 from any to any with any => allow
 906 from 34.171.167.179 to 228.56.18.251 with udp/20321 => allow
 907 from 115.5.246.32 to 172.129.8.24 with udp/64362,37981,11971,57069 => allow
 908 from 95.40.106.66 to 78.0.0.0/8 with any => allow
