@@ -1,5 +1,6 @@
 package com.intelliment.control;
 
+import com.intelliment.control.exception.NotAllowedException;
 import com.intelliment.entity.AclEntry;
 import com.intelliment.entity.AclEntryBuilder;
 import com.intelliment.entity.Protocol;
@@ -13,9 +14,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
-import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertNotNull;
-import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Matchers.any;
@@ -45,18 +44,16 @@ public class AclServiceTest {
     @Test
     public void isAllowed() throws Exception {
         // Act
-        boolean allowed = service.isAllowed(any(Request.class));
+        AclEntry allowed = service.isAllowed(any(Request.class));
         // Assert
-        assertTrue(allowed);
+        assertNotNull(allowed);
     }
 
-    @Test
+    @Test(expected = NotAllowedException.class)
     public void isNotAllowed() throws Exception {
         when(entry.matches(any(Request.class))).thenReturn(false);
         // Act
-        boolean allowed = service.isAllowed(any(Request.class));
-        // Assert
-        assertFalse(allowed);
+        service.isAllowed(any(Request.class));
     }
 
     @Test
