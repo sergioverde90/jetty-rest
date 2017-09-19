@@ -52,11 +52,6 @@ public class AclEntryTest {
         assertEquals(toCompare.hashCode(), aclEntry.hashCode());
     }
 
-    @Test
-    public void toStringTest() throws Exception {
-        fail();
-    }
-
     private AclEntry buildEntry() {
         return new AclEntryBuilder(new SubnetUtilsAnalyzer())
                 .setId(1)

@@ -8,9 +8,8 @@ import java.util.regex.Pattern;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import static com.intelliment.entity.Constants.ANY_PORT;
-import static com.intelliment.entity.Constants.MAX_PORT_ALLOWED;
-import static com.intelliment.entity.Constants.OPEN_WORLD_LABEL;
+import static com.intelliment.entity.Constants.*;
+import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toSet;
 
 public class Protocol {
@@ -51,7 +50,7 @@ public class Protocol {
         // regex patter for (TCP | UDP)/port[,port] or 'any'.
         String regex = "(TCP|UDP|tcp|udp)/(any|(\\d{1,5}(,\\d{1,5})*)+)";
         Pattern pattern = Pattern.compile(regex);
-        if(!pattern.matcher(format).matches()) throw new IllegalArgumentException(format+" is not a valid format");
+        if(!pattern.matcher(format).matches()) throw new IllegalArgumentException(">"+format+"< is not a valid format");
         ProtocolType protocolType = extractProtocol(format);
         Set<Integer> ports = extractPorts(format);
         return new Protocol(protocolType, ports);
@@ -64,6 +63,41 @@ public class Protocol {
         System.out.println("matchAllPorts(requestProtocol) = " + matchAllPorts(requestProtocol));
         return matchProtocols(requestProtocol) && matchAllPorts(requestProtocol);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Protocol protocol = (Protocol) o;
+
+        if (type != protocol.type) return false;
+        return ports.equals(protocol.ports);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = type.hashCode();
+        result = 31 * result + ports.hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        String protocolType = type.toString()
+                .toLowerCase();
+        String protocolPorts = ports.stream()
+                .filter(el -> el != Constants.ANY_PORT)
+                .map(Object::toString)
+                .collect(joining(","));
+        if(!protocolPorts.equals("")) {
+            protocolType = protocolType.concat(Constants.SLASH).concat(protocolPorts);
+        } else if(!protocolType.equals(Constants.OPEN_WORLD_LABEL)){
+            protocolType = protocolType.concat(Constants.SLASH).concat(Constants.OPEN_WORLD_LABEL);
+        }
+        return protocolType;
+    }
+
 
     private boolean matchAllPorts(Protocol requestProtocol) {
         return isAnyPort() || ports.containsAll(requestProtocol.ports);
@@ -107,31 +141,5 @@ public class Protocol {
         matcher.find();
         String matchedValue = matcher.group().toUpperCase();
         return ProtocolType.valueOf(matchedValue);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Protocol protocol = (Protocol) o;
-
-        if (type != protocol.type) return false;
-        return ports.equals(protocol.ports);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = type.hashCode();
-        result = 31 * result + ports.hashCode();
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "{\"Protocol\":{"
-                + "\"type\":\"" + type + "\""
-                + ", \"ports\":" + ports
-                + "}}";
     }
 }

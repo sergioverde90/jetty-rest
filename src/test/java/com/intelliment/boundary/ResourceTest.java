@@ -1,5 +1,10 @@
 package com.intelliment.boundary;
 
+import com.intelliment.DiscardAnyAllowedLoader;
+import com.intelliment.control.AclEntryJsonParser;
+import com.intelliment.control.AclFileLoader;
+import com.intelliment.control.AclService;
+import com.intelliment.control.AclServiceImpl;
 import com.intelliment.entity.AclEntry;
 import com.intelliment.entity.Protocol;
 import com.intelliment.entity.Request;
@@ -11,19 +16,19 @@ import java.util.Collection;
 import java.util.NoSuchElementException;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 
 public class ResourceTest {
 
     // SUT
     Resource resource;
+    AclEntryJsonParser parser;
 
     @Before
     public void init() {
-        resource = new Resource();
-        resource.onInit(); // @PostConstruct invocation
+        AclService loader = new AclServiceImpl(new DiscardAnyAllowedLoader(new AclFileLoader()));
+        resource = new Resource(loader, new AclEntryJsonParser());
+        parser = new AclEntryJsonParser();
     }
 
     @Test
@@ -33,9 +38,10 @@ public class ResourceTest {
         Protocol protocol = Protocol.valueOf("udp/44840");
         Request request = buildRequest(source, destination, protocol);
         Response matches = resource.match(request);
-        AclEntry isAllowed = extractFromResponse(matches);
-        assertNotNull(isAllowed);
-        assertEquals(70, isAllowed.id);
+        String matchesFound = extractFromResponse(matches);
+        assertNotNull(matchesFound);
+        AclEntry entry = extractAclEntry(matchesFound);
+        assertEquals(70, entry.id);
     }
 
     @Test
@@ -65,9 +71,10 @@ public class ResourceTest {
         Protocol protocol = Protocol.valueOf("udp/44840");
         Request request = buildRequest(source, destination, protocol);
         Response matches = resource.match(request);
-        AclEntry isAllowed = extractFromResponse(matches);
-        assertNotNull(isAllowed);
-        assertEquals(16, isAllowed.id);
+        String matchesFound = extractFromResponse(matches);
+        assertNotNull(matchesFound);
+        AclEntry entry = extractAclEntry(matchesFound);
+        assertEquals(16, entry.id);
     }
 
     @Test
@@ -77,22 +84,25 @@ public class ResourceTest {
         Protocol protocol = Protocol.valueOf("tcp/8080,80,90");
         Request request = new Request(source, destination, protocol);
         Response matches = resource.match(request);
-        AclEntry isAllowed = extractFromResponse(matches);
-        assertNotNull(isAllowed);
-        assertEquals(24, isAllowed.id);
+        String matchesFound = extractFromResponse(matches);
+        assertNotNull(matchesFound);
+        AclEntry entry = extractAclEntry(matchesFound);
+        assertEquals(24, entry.id);
     }
 
     @Test
     public void aclEntry() {
         Response response = resource.aclEntry(998);
-        AclEntry entry = extractFromResponse(response);
-        assertNotNull(entry);
+        String matchesFound = extractFromResponse(response);
+        assertNotNull(matchesFound);
     }
 
     @Test
     public void aclEntryMatch() {
         Response response = resource.aclEntry(998);
-        AclEntry entry = extractFromResponse(response);
+        String matchesFound = extractFromResponse(response);
+        assertNotNull(matchesFound);
+        AclEntry entry = extractAclEntry(matchesFound);
         assertEquals(998, entry.id);
     }
 
@@ -104,23 +114,31 @@ public class ResourceTest {
     @Test
     public void aclNotNull() {
         Response response = resource.acl();
-        Collection<AclEntry> entries = extractFromResponse(response);
+        String entries = extractFromResponse(response);
         assertNotNull(entries);
     }
 
     @Test
     public void aclNoEmpty() {
         Response response = resource.acl();
-        Collection<AclEntry> entries = extractFromResponse(response);
-        assertThat(entries.isEmpty(), is(false));
+        String entries = extractFromResponse(response);
+        Collection<AclEntry> acl = extractAclEntries(entries);
+        assertThat(acl.isEmpty(), is(false));
     }
 
     private Request buildRequest(String source, String destination, Protocol protocol) {
         return new Request(source, destination, protocol);
     }
 
-    private <T> T extractFromResponse(Response response) {
-        return (T)response.getEntity();
+    private String extractFromResponse(Response response) {
+        return (String) response.getEntity();
     }
 
+    private AclEntry extractAclEntry(String jsonEntry) {
+        return parser.parse(jsonEntry);
+    }
+
+    private Collection<AclEntry> extractAclEntries(String entries) {
+        return parser.parseEntries(entries);
+    }
 }

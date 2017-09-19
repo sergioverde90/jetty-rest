@@ -7,6 +7,6 @@ import java.util.List;
 /**
  * Acl loader from external source
  */
-interface AclLoader {
+public interface AclLoader {
     List<AclEntry> sources();
 }

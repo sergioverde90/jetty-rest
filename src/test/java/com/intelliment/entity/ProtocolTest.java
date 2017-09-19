@@ -45,8 +45,9 @@ public class ProtocolTest {
     @Test
     public void toStringTest() {
         Protocol protocol = Protocol.newInstance(Protocol.ProtocolType.TCP, 80);
-        String expected = "{\"Protocol\":{\"type\":\"TCP\", \"ports\":[80]}}";
-        assertEquals(expected, protocol.toString());
+        String stringProtocol = protocol.toString();
+        Protocol fromString = Protocol.valueOf(stringProtocol);
+        assertEquals(fromString, protocol);
     }
 
     @Test
