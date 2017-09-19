@@ -1,5 +1,6 @@
 package com.intelliment.control;
 
+import com.intelliment.control.exception.NotAllowedException;
 import com.intelliment.entity.AclEntry;
 import com.intelliment.entity.Request;
 
@@ -16,11 +17,11 @@ public class AclServiceImpl implements AclService {
     }
 
     @Override
-    public boolean isAllowed(Request request) {
+    public AclEntry isAllowed(Request request) throws NotAllowedException {
         for (AclEntry policy : policies) {
-            if(policy.matches(request)) return true;
+            if(policy.matches(request)) return policy;
         }
-        return false;
+        throw new NotAllowedException("request not allowed");
     }
 
     @Override
