@@ -8,7 +8,7 @@ public class SubnetUtilsAnalyzer implements AddressAnalyzer {
 
     @Override
     public IpAddress valueOf(String cidr) {
-        SubnetUtils utils = new SubnetUtils(cidr);
+        SubnetUtils utils = getSubnetUtilsInstance(cidr);
         String mask =  utils.getInfo().getNetmask();
         String broadcast = utils.getInfo().getBroadcastAddress();
         return new IpAddress.IpAddressBuilder()
@@ -26,13 +26,13 @@ public class SubnetUtilsAnalyzer implements AddressAnalyzer {
     public boolean isInRange(String in, IpAddress toCompare) {
         String cidrToCompare = toCompare.cidr;
         if(isAnyAllowed(cidrToCompare)) return true;
-        SubnetUtils utils = new SubnetUtils(cidrToCompare);
+        SubnetUtils utils = getSubnetUtilsInstance(cidrToCompare);
         if(isSpecificIp(utils)) return checkSpecificIpsAreEquals(in, cidrToCompare);
         return utils.getInfo().isInRange(in);
     }
 
-    private boolean isAnyAllowed(String cidrToCompare) {
-        return cidrToCompare.equals(Constants.OPEN_WORLD_ADDRESS);
+    private static SubnetUtils getSubnetUtilsInstance(String cidr) {
+        return new SubnetUtils(cidr);
     }
 
     private static boolean checkSpecificIpsAreEquals(String in, String toCompare) {
@@ -41,5 +41,9 @@ public class SubnetUtilsAnalyzer implements AddressAnalyzer {
 
     private static boolean isSpecificIp(SubnetUtils utils) {
         return utils.getInfo().getAddressCount() == 0;
+    }
+
+    private static boolean isAnyAllowed(String cidrToCompare) {
+        return cidrToCompare.equals(Constants.OPEN_WORLD_ADDRESS);
     }
 }
