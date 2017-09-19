@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
+import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.CoreMatchers.is;
@@ -47,6 +48,15 @@ public class AclServiceTest {
         boolean allowed = service.isAllowed(any(Request.class));
         // Assert
         assertTrue(allowed);
+    }
+
+    @Test
+    public void isNotAllowed() throws Exception {
+        when(entry.matches(any(Request.class))).thenReturn(false);
+        // Act
+        boolean allowed = service.isAllowed(any(Request.class));
+        // Assert
+        assertFalse(allowed);
     }
 
     @Test

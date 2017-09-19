@@ -35,8 +35,7 @@ public class AclEntry {
         Protocol requestProtocol = request.protocol;
         if(!protocol.isInRange(requestProtocol)) return false;
         System.out.println("protocol in range");
-        // TODO: action allowed here (must be the last computation)
-        return true;
+        return action.equals(ActionType.ALLOW);
     }
 
     @Override

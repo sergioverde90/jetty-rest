@@ -25,13 +25,31 @@ public class AclEntryTest {
     }
 
     @Test
+    public void notMatchesByDestination() throws Exception {
+        AclEntry aclEntry = buildEntry();
+        boolean match = aclEntry.matches(new Request("192.168.0.235", "49.1.2.16", Protocol.valueOf("udp/80")));
+        assertFalse(match);
+    }
+
+    @Test
+    public void notMatchesByProtocol() throws Exception {
+        AclEntry aclEntry = buildEntry();
+        boolean match = aclEntry.matches(new Request("192.168.0.235", "49.1.2.16", Protocol.valueOf("tcp/80")));
+        assertFalse(match);
+    }
+
+    @Test
     public void equals() throws Exception {
-        fail();
+        AclEntry aclEntry = buildEntry();
+        AclEntry toCompare = buildEntry();
+        assertEquals(toCompare, aclEntry);
     }
 
     @Test
     public void hashCodeTest() throws Exception {
-        fail();
+        AclEntry aclEntry = buildEntry();
+        AclEntry toCompare = buildEntry();
+        assertEquals(toCompare.hashCode(), aclEntry.hashCode());
     }
 
     @Test
@@ -41,9 +59,9 @@ public class AclEntryTest {
 
     private AclEntry buildEntry() {
         return new AclEntryBuilder(new SubnetUtilsAnalyzer())
+                .setId(1)
                 .source("192.168.0.0/24")
                 .destination("48.0.0.0/8")
-                .setId(1)
                 .protocol(Protocol.valueOf("udp/any"))
                 .action(AclEntry.ActionType.ALLOW)
                 .build();

@@ -4,6 +4,7 @@ import com.intelliment.entity.AclEntry;
 import com.intelliment.entity.Request;
 
 import java.util.Collection;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 public class AclServiceImpl implements AclService {
@@ -30,7 +31,7 @@ public class AclServiceImpl implements AclService {
     @Override
     public AclEntry get(int id) {
         Optional<AclEntry> entry = policies.stream().filter(e -> e.id == id).findFirst();
-        return entry.orElseThrow(IllegalArgumentException::new);
+        return entry.orElseThrow(NoSuchElementException::new);
     }
 
 }
