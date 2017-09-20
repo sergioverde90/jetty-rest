@@ -13,4 +13,9 @@ public class Constants {
     public static final String DEFAULT_NETMASK = "/32";
     public static final String OPEN_WORLD_ADDRESS = "0.0.0.0/32";
     public static final int MAX_PORT_ALLOWED = 65535; // 2^16
+
+    public static String anyToAddress(String address) {
+        if(OPEN_WORLD_LABEL.equalsIgnoreCase(address)) address = OPEN_WORLD_ADDRESS;
+        return address;
+    }
 }

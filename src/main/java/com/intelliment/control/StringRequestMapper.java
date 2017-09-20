@@ -2,6 +2,7 @@ package com.intelliment.control;
 
 import com.intelliment.entity.AclEntry;
 import com.intelliment.entity.AclEntryBuilder;
+import com.intelliment.entity.Constants;
 import com.intelliment.entity.Protocol;
 
 import static com.intelliment.entity.Constants.*;
@@ -46,8 +47,7 @@ public class StringRequestMapper implements RequestMapper<String> {
     }
 
     private static String checkAny(String address) {
-        if(OPEN_WORLD_LABEL.equalsIgnoreCase(address)) address = OPEN_WORLD_ADDRESS;
-        return address;
+        return Constants.anyToAddress(address);
     }
 
     private static AclEntry.ActionType extractAction(String input) {
