@@ -48,3 +48,11 @@ docker run -it --name jetty -p 8080:8080 jetty
 ```bash
 curl -XPOST -H "Content-Type: application/json" -d {\"source\":\"192.168.1.5\",\"destination\":\"198.168.1.5\",\"protocol\":\"tcp/any\"} http://localhost:8080/app/resources/intelliment/acl
 ``` 
+### entire ACL
+```bash
+curl -i http://localhost:8080/app/resources/intelliment/acl
+```
+### specific ACL entry
+```bash
+curl -i http://localhost:8080/app/resources/intelliment/acl/1
+```  
