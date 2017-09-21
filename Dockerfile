@@ -1,3 +1,3 @@
 FROM jetty
-COPY ./target/example.war /var/lib/jetty/webapps
+COPY ./target/app.war /var/lib/jetty/webapps
 EXPOSE 8080
