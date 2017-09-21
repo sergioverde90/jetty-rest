@@ -44,7 +44,6 @@ public class Resource {
     public Response acl() {
         Collection<AclEntry> acl = service.acl();
         String jsonFormat = toJSON(acl);
-        System.out.println("jsonFormat = " + jsonFormat);
         return Response.ok(jsonFormat, MediaType.APPLICATION_JSON).build();
     }
 
@@ -66,9 +65,11 @@ public class Resource {
 
     /**
      * Return the first rule that their fields match with the packet
-     * fields in order to know what action to apply. For example, for a packet
-     * with fields: [source=”192.168.0.5”, destination=”192.168.0.1” and
-     * protocol=”UDP/80”] the first rule that match it will be the number 3.
+     * fields in order to know what action to apply.
+     *
+     * <p>For example, for a packet with fields: [source=”192.168.0.5”, destination=”192.168.0.1”
+     * and protocol=”UDP/80”] the first rule that match it will be the number 3.</p>
+     *
      * Note that the IP address 192.168.0.5 is contained in the subnet
      * 192.168.0.0/24, the IP 192.168.0.2 is contained in the subnet
      * 192.168.0.0/28 and udp/80 is a subset of the udp/any.
@@ -84,7 +85,6 @@ public class Resource {
         try {
             AclEntry entry = service.isAllowed(request);
             String jsonFormat = toJSON(entry);
-            System.out.println("jsonFormat = " + jsonFormat);
             return Response.ok(jsonFormat, MediaType.APPLICATION_JSON).build();
         }catch (NotAllowedException nae){
             return Response.status(Response.Status.FORBIDDEN).build();

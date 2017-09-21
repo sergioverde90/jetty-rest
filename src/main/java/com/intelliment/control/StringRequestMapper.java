@@ -2,7 +2,6 @@ package com.intelliment.control;
 
 import com.intelliment.entity.AclEntry;
 import com.intelliment.entity.AclEntryBuilder;
-import com.intelliment.entity.Constants;
 import com.intelliment.entity.Protocol;
 
 import static com.intelliment.entity.Constants.*;
@@ -34,7 +33,7 @@ public class StringRequestMapper implements RequestMapper<String> {
         int fromIndex = input.indexOf("from") + "from".length();
         int toIndex = input.indexOf("to");
         String address = input.substring(fromIndex, toIndex).trim();
-        address = checkAny(address);
+        address = anyToAddress(address);
         return toCIDR(address);
     }
 
@@ -42,12 +41,8 @@ public class StringRequestMapper implements RequestMapper<String> {
         int toIndex = input.indexOf("to") + "to".length();
         int withIndex = input.indexOf("with");
         String address = input.substring(toIndex, withIndex).trim();
-        address = checkAny(address);
+        address = anyToAddress(address);
         return toCIDR(address);
-    }
-
-    private static String checkAny(String address) {
-        return Constants.anyToAddress(address);
     }
 
     private static AclEntry.ActionType extractAction(String input) {

@@ -27,13 +27,20 @@ public class AclEntryBuilder {
         return source;
     }
 
-    public AclEntryBuilder source(String source) {
-        this.source = analyzer.valueOf(source);
-        return this;
-    }
-
     public Protocol getProtocol() {
         return protocol;
+    }
+
+    public AclEntry.ActionType getAction() {
+        return action;
+    }
+
+    int getId() {
+        return id;
+    }
+
+    AddressAnalyzer getAnalyzer() {
+        return analyzer;
     }
 
     public AclEntryBuilder protocol(Protocol protocol) {
@@ -41,8 +48,9 @@ public class AclEntryBuilder {
         return this;
     }
 
-    public AclEntry.ActionType getAction() {
-        return action;
+    public AclEntryBuilder source(String source) {
+        this.source = analyzer.valueOf(source);
+        return this;
     }
 
     public AclEntryBuilder action(AclEntry.ActionType action) {
@@ -59,16 +67,8 @@ public class AclEntryBuilder {
         return this;
     }
 
-    public int getId() {
-        return id;
-    }
-
     public AclEntryBuilder setId(int id) {
         this.id = id;
         return this;
-    }
-
-    public AddressAnalyzer getAnalyzer() {
-        return analyzer;
     }
 }

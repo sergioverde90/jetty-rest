@@ -2,7 +2,6 @@ package com.intelliment.control;
 
 import com.intelliment.entity.AclEntry;
 import com.intelliment.entity.AclEntryBuilder;
-import com.intelliment.entity.Constants;
 import com.intelliment.entity.Protocol;
 
 import javax.json.*;
@@ -10,7 +9,7 @@ import java.io.StringReader;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-import static com.intelliment.entity.Constants.anyToAddress;
+import static com.intelliment.entity.Constants.*;
 
 public class AclEntryJsonParser implements JsonParser<AclEntry> {
 
@@ -36,8 +35,8 @@ public class AclEntryJsonParser implements JsonParser<AclEntry> {
         JsonObject jsonObject = reader.readObject();
         return new AclEntryBuilder(new SubnetUtilsAnalyzer())
                 .setId(jsonObject.getInt("id"))
-                .source(unformat(jsonObject.getString("source")))
-                .destination(unformat(jsonObject.getString("destination")))
+                .source(revert(jsonObject.getString("source")))
+                .destination(revert(jsonObject.getString("destination")))
                 .protocol(Protocol.valueOf(jsonObject.getString("protocol")))
                 .action(AclEntry.ActionType.valueOf(jsonObject.getString("action").toUpperCase()))
                 .build();
@@ -48,7 +47,8 @@ public class AclEntryJsonParser implements JsonParser<AclEntry> {
         JsonReader reader = Json.createReader(new StringReader(types));
         JsonArray jsonArray = reader.readArray();
         return jsonArray.stream()
-                .map(j -> parse(j.toString()))
+                .map(Object::toString)
+                .map(this::parse)
                 .collect(Collectors.toList());
     }
 
@@ -69,27 +69,12 @@ public class AclEntryJsonParser implements JsonParser<AclEntry> {
         return cidr;
     }
 
-    private static String unformat(String cidr) {
+    private static String revert(String cidr) {
         cidr = anyToAddress(cidr);
         cidr = addDefaultMask(cidr);
         return cidr;
     }
 
-    private static String addDefaultMask(String cidr) {
-        int index = cidr.indexOf(Constants.SLASH);
-        if(index == -1) return cidr.concat(Constants.DEFAULT_NETMASK);
-        return cidr;
-    }
 
-    private static String removeDefaultMask(String cidr) {
-        int index = cidr.indexOf(Constants.DEFAULT_NETMASK);
-        if(index == -1) return cidr;
-        return cidr.substring(0, index);
-    }
-
-    private static String addressToAny(String cidr) {
-        if(!cidr.equals(Constants.OPEN_WORLD_ADDRESS)) return cidr;
-        return Constants.OPEN_WORLD_LABEL;
-    }
 
 }

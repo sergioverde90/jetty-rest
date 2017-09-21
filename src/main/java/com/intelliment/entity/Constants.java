@@ -18,4 +18,21 @@ public class Constants {
         if(OPEN_WORLD_LABEL.equalsIgnoreCase(address)) address = OPEN_WORLD_ADDRESS;
         return address;
     }
+
+    public static String addressToAny(String cidr) {
+        if(!cidr.equals(Constants.OPEN_WORLD_ADDRESS)) return cidr;
+        return Constants.OPEN_WORLD_LABEL;
+    }
+
+    public static String addDefaultMask(String cidr) {
+        int index = cidr.indexOf(Constants.SLASH);
+        if(index == -1) return cidr.concat(Constants.DEFAULT_NETMASK);
+        return cidr;
+    }
+
+    public static String removeDefaultMask(String cidr) {
+        int index = cidr.indexOf(Constants.DEFAULT_NETMASK);
+        if(index == -1) return cidr;
+        return cidr.substring(0, index);
+    }
 }

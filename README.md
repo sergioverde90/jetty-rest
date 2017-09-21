@@ -1,19 +1,27 @@
-This project uses **constructor dependency injection**. Because this project is intended to be used with a standard web
+Because this project is intended to be used with a standard web
 profile server (like Tomcat or Jetty) no external modules will be loaded, therefore there are no dependency injection 
-framework like Spring, EJB or CDI.
+framework (like Spring, EJB or CDI).
 
-The used approach to inject dependencies is based on @PostConstruct web standard.
+This project uses **constructor dependency injection**. Constructor injection is suitable for testing. The used approach 
+to inject dependencies is based on **@PostConstruct** web standard. 
 
 ## BUILD REQUISITES
 * JDK +8
 * Maven +3.3
 
+## BENEFITS
+* +90% test coverage
+* Thing war
+* Immutable entities
+
 ## USED PATTERNS
 * Decorator
 * Command *(in lambda java 8 style)*
 * Strategy
+* Facade pattern between services
 * Factory method
-* Builder
+* Builder pattern that allow public fields *(avoid getter / setter calls)*
+* Entity-Control-Boundary *as object model*
 
 ## USED PRINCIPLES
 * Interface Segregation
@@ -21,3 +29,16 @@ The used approach to inject dependencies is based on @PostConstruct web standard
 * Don't Repeat Yourself
 * Single Responsibility Principle
 * Dependency Injection
+
+## HOW TO RUN
+```bash
+mvn jetty:run
+```
+
+## HOW TO RUN WITH DOCKER
+```bash
+docker build -t jetty .
+```
+```bash
+docker run -it --name jetty -p 8080:8080 jetty
+```

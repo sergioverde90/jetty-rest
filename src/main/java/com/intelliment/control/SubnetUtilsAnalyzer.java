@@ -4,6 +4,8 @@ import com.intelliment.entity.Constants;
 import com.intelliment.entity.IpAddress;
 import org.apache.commons.net.util.SubnetUtils;
 
+import static com.intelliment.entity.Constants.addDefaultMask;
+
 public class SubnetUtilsAnalyzer implements AddressAnalyzer {
 
     @Override
@@ -27,7 +29,7 @@ public class SubnetUtilsAnalyzer implements AddressAnalyzer {
         String cidrToCompare = toCompare.cidr;
         if(isAnyAllowed(cidrToCompare)) return true;
         SubnetUtils utils = getSubnetUtilsInstance(cidrToCompare);
-        if(isSpecificIp(utils)) return checkSpecificIpsAreEquals(in, cidrToCompare);
+        if(isConcreteIp(utils)) return concreteIpsAreEquals(in, cidrToCompare);
         return utils.getInfo().isInRange(in);
     }
 
@@ -35,11 +37,11 @@ public class SubnetUtilsAnalyzer implements AddressAnalyzer {
         return new SubnetUtils(cidr);
     }
 
-    private static boolean checkSpecificIpsAreEquals(String in, String toCompare) {
-        return in.concat(Constants.DEFAULT_NETMASK).equals(toCompare);
+    private static boolean concreteIpsAreEquals(String in, String toCompare) {
+        return addDefaultMask(in).equals(toCompare);
     }
 
-    private static boolean isSpecificIp(SubnetUtils utils) {
+    private static boolean isConcreteIp(SubnetUtils utils) {
         return utils.getInfo().getAddressCount() == 0;
     }
 

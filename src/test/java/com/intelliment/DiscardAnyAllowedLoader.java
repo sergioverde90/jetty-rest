@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
  */
 public class DiscardAnyAllowedLoader implements AclLoader {
 
-    AclFileLoader decorator;
+    private AclFileLoader decorator;
 
     private static final AclEntry anyAllow = new AclEntryBuilder(new SubnetUtilsAnalyzer())
             .source(Constants.OPEN_WORLD_ADDRESS)
@@ -37,12 +37,9 @@ public class DiscardAnyAllowedLoader implements AclLoader {
     @Override
     public List<AclEntry> sources() {
         List<AclEntry> sources = decorator.sources();
-        List<AclEntry> filtered = sources.stream()
+        return sources.stream()
                 .filter(this::isNotAnyAllowed)
                 .collect(Collectors.toList());
-        System.out.println("filtered.size() = " + filtered.size());
-        System.out.println("sources = " + sources.size());
-        return filtered;
     }
 
     private boolean isNotAnyAllowed(AclEntry el) {

@@ -1,5 +1,7 @@
 package com.intelliment.entity;
 
+import com.intelliment.entity.annotation.Immutable;
+
 import java.util.Objects;
 
 /**
@@ -7,6 +9,7 @@ import java.util.Objects;
  *
  * @author Sergio Verde
  */
+@Immutable
 public class IpAddress {
 
     public final String mask;

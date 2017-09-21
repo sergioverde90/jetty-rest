@@ -1,5 +1,7 @@
 package com.intelliment.entity;
 
+import com.intelliment.entity.annotation.Immutable;
+
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -12,6 +14,7 @@ import static com.intelliment.entity.Constants.*;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toSet;
 
+@Immutable
 public class Protocol {
 
     public enum ProtocolType { TCP, UDP, ANY }
@@ -21,7 +24,7 @@ public class Protocol {
 
     private Protocol(ProtocolType type, Set<Integer> ports) {
         this.type = type;
-        this.ports = new HashSet<>(ports);
+        this.ports = Collections.unmodifiableSet(new HashSet<>(ports));
     }
     
     static Protocol newInstance(ProtocolType type, Set<Integer> ports) {
@@ -57,10 +60,6 @@ public class Protocol {
     }
 
     public boolean isInRange(Protocol requestProtocol) {
-        System.out.println("isAnyProtocol() = " + isAnyProtocol());
-        System.out.println("isAnyPort() = " + isAnyPort());
-        System.out.println("matchProtocols(requestProtocol) = " + matchProtocols(requestProtocol));
-        System.out.println("matchAllPorts(requestProtocol) = " + matchAllPorts(requestProtocol));
         return matchProtocols(requestProtocol) && matchAllPorts(requestProtocol);
     }
 

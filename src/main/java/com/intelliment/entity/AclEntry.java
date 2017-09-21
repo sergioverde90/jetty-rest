@@ -1,9 +1,11 @@
 package com.intelliment.entity;
 
 import com.intelliment.control.AddressAnalyzer;
+import com.intelliment.entity.annotation.Immutable;
 
 import java.util.Objects;
 
+@Immutable
 public class AclEntry {
 
     public enum ActionType {ALLOW, DENY}
@@ -27,14 +29,10 @@ public class AclEntry {
     public boolean matches(Request request) {
         String requestSource = request.source;
         if(!analyzer.isInRange(requestSource, source)) return false;
-        System.out.println("source in range");
         String requestDestination = request.destination;
         if(!analyzer.isInRange(requestDestination, destination)) return false;
-        System.out.println("destination in range");
         Protocol requestProtocol = request.protocol;
         if(!protocol.isInRange(requestProtocol)) return false;
-        System.out.println("protocol in range");
-        System.out.println("action = " + action);
         return action.equals(ActionType.ALLOW);
     }
 
