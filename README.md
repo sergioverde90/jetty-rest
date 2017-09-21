@@ -42,3 +42,9 @@ docker build -t jetty .
 ```bash
 docker run -it --name jetty -p 8080:8080 jetty
 ```
+
+## HOW TO TEST
+### matched entries
+```bash
+curl -XPOST -H "Content-Type: application/json" -d {\"source\":\"192.168.1.5\",\"destination\":\"198.168.1.5\",\"protocol\":\"tcp/any\"} http://localhost:8088/app/resources/intelliment/acl
+``` 

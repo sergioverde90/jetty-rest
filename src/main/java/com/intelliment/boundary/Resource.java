@@ -81,6 +81,7 @@ public class Resource {
     @POST
     @Path("/acl")
     @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     public Response match(Request request) {
         try {
             AclEntry entry = service.isAllowed(request);
