@@ -11,7 +11,7 @@ to inject dependencies is based on **@PostConstruct** web standard.
 
 ## BENEFITS
 * +90% test coverage
-* Thing war
+* Thin war
 * Immutable entities
 
 ## USED PATTERNS

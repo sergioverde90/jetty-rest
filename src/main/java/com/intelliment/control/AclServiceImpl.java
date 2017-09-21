@@ -18,6 +18,12 @@ public class AclServiceImpl implements AclService {
 
     @Override
     public AclEntry isAllowed(Request request) throws NotAllowedException {
+        /*
+        * IMPORTANT NOTE: This search is suitable to be used with
+        * parallel stream and ForkJoin. But is a requisite that
+        * acl entries be read from top to bottom in sequential
+        * order.
+        */
         for (AclEntry policy : policies) {
             if(policy.matches(request)) return policy;
         }
