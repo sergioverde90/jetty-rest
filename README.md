@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/sergioverde90/jetty-rest.svg?branch=master)](https://travis-ci.org/sergioverde90/jetty-rest)
+
 Because this project is intended to be used with a standard web
 profile server (like Tomcat or Jetty) no external modules will be loaded, therefore there are no dependency injection 
 framework (like Spring, EJB or CDI).
